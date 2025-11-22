@@ -9,17 +9,23 @@ use std::io;
 
 #[actix_web::main]
 async fn main() -> io::Result<()> {
+    // Initialize M-Pesa service
     let mpesa_service = match MpesaService::new() {
         Ok(service) => {
+            println!("M-Pesa service initialized successfully");
             web::Data::new(service)
         }
         Err(e) => {
+            eprintln!("Failed to initialize M-Pesa service: {}", e);
             std::process::exit(1);
         }
     };
 
+    // Initialize callback state
     let callback_state = web::Data::new(callback::CallbackState::default());
 
+    println!("Starting server at http://localhost:8080");
+    println!("Open http://localhost:8080 in your browser to test STK push");
 
     HttpServer::new(move || {
         App::new()

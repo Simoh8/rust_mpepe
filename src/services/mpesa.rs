@@ -2,7 +2,6 @@ use anyhow::{anyhow, Result};
 use base64::{engine::general_purpose, Engine as _};
 use chrono::Utc;
 use reqwest::Client;
-use serde::Deserialize;
 use std::env;
 use crate::models::requests::StkPushRequest;
 use crate::models::responses::{StkPushResponse, OAuthResponse};

@@ -1,5 +1,4 @@
 use actix_web::{web, HttpResponse, Result};
-use serde::Deserialize;
 use std::sync::Mutex;
 use crate::models::responses::StkCallback;
 
