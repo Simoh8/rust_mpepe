@@ -2,8 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "target/release/mpesa_web",
-      "use": "@vercel/static"
+      "src": "**/*.rs",
+      "use": "@vercel-community/rust"
     }
   ],
   "routes": [
@@ -13,7 +13,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/index.html"
     }
   ]
 }
