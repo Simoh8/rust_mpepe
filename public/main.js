@@ -6,20 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkCallbackButton = document.getElementById('checkCallback');
     const phoneInput = document.getElementById('phone');
     const amountInput = document.getElementById('amount');
-    
-
 
     // Add event listeners
     if (payButton) {
         payButton.addEventListener('click', initiatePayment);
-    } else {
-        console.error('❌ Pay button not found!');
     }
 
     if (checkCallbackButton) {
         checkCallbackButton.addEventListener('click', checkLastCallback);
-    } else {
-        console.error('❌ Check callback button not found!');
     }
 
     // Format phone number as user types
@@ -58,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function initiatePayment() {
-    
     const phoneInput = document.getElementById('phone');
     const amountInput = document.getElementById('amount');
     const button = document.getElementById('payButton');
@@ -70,7 +63,6 @@ async function initiatePayment() {
 
     const phone = phoneInput.value.trim();
     const amount = amountInput.value.trim();
-
 
     // Basic validation
     if (!phone) {
@@ -114,14 +106,23 @@ async function initiatePayment() {
             })
         });
 
-        const data = await response.json();
+        // Check if response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            const text = await response.text();
+            throw new Error(`Server returned: ${text.substring(0, 100)}`);
+        }
 
-        if (response.ok && data.success) {
+        if (response.ok) {
             showResponse(
                 `✅ STK Push initiated successfully!<br><br>
                 📱 Check your phone (${phone}) to complete the payment<br>
                 💰 Amount: KES ${amount}<br>
-                📝 Status: ${data.data.ResponseDescription || 'Pending'}`,
+                📝 Status: ${data.ResponseDescription || data.message || 'Pending'}`,
                 'success'
             );
             
@@ -129,11 +130,11 @@ async function initiatePayment() {
             phoneInput.value = '';
             amountInput.value = '';
         } else {
-            const errorMessage = data.error || `HTTP ${response.status}`;
+            const errorMessage = data.error || `Request failed with status ${response.status}`;
             showResponse(`❌ Failed: ${errorMessage}`, 'error');
         }
     } catch (error) {
-        showResponse(`❌ Network error: ${error.message}`, 'error');
+        showResponse(`❌ Error: ${error.message}`, 'error');
     } finally {
         // Reset button
         button.disabled = false;
@@ -142,10 +143,8 @@ async function initiatePayment() {
 }
 
 function showResponse(message, type) {
-    
     const responseDiv = document.getElementById('response');
     if (!responseDiv) {
-        console.error('❌ Response div not found');
         return;
     }
     
@@ -158,12 +157,10 @@ function showResponse(message, type) {
 }
 
 async function checkLastCallback() {
-    
     const callbackData = document.getElementById('callbackData');
     const button = document.getElementById('checkCallback');
     
     if (!callbackData || !button) {
-        console.error('❌ Callback elements not found');
         return;
     }
     
@@ -175,7 +172,10 @@ async function checkLastCallback() {
     try {
         const response = await fetch('/last-callback');
         
-        if (response.ok) {
+        // Check if response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
             callbackData.textContent = JSON.stringify(data, null, 2);
         } else {
@@ -183,7 +183,7 @@ async function checkLastCallback() {
             callbackData.textContent = text || 'No callback received yet';
         }
     } catch (error) {
-        callbackData.textContent = `Error fetching callback: ${error.message}`;
+        callbackData.textContent = `Error: ${error.message}`;
     } finally {
         button.disabled = false;
         button.textContent = originalText;
