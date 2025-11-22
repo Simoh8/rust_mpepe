@@ -2,18 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "**/*.rs",
-      "use": "@vercel-community/rust"
+      "src": "src/main.rs",
+      "use": "@vercel/build-utils/rust"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/public/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/"
     }
   ]
 }
