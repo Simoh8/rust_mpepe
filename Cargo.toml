@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4.4"
-actix-files = "0.6"
+actix-files = "0.6"  # Add this line
 anyhow = "1.0"
 base64 = "0.21"
 chrono = { version = "0.4", features = ["serde"] }

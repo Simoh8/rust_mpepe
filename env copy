@@ -1,0 +1,12 @@
+MPESA_CONSUMER_KEY=glpSnkVyZKdAgw4kTz90RGQ8GxMMdcFOVOdz4B6jSJD9PrOX
+MPESA_CONSUMER_SECRET=A6G3gxmrijVaChhM0XlB3MAlr4FIewtGH6PiB9UgdvhWgBI5eFDxEk79VfBSibtP
+MPESA_SHORTCODE=174379
+MPESA_PASSKEY=bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
+MPESA_CALLBACK_URL=https://yourdomain.example.com/mpesa/callback
+MPESA_AMOUNT=1
+MPESA_PARTY_A=254742582849
+MPESA_ACCOUNT_REF=ORDER123
+MPESA_TRANSACTION_DESC="Payment for order 123"
+# Optional override (sandbox shown):
+MPESA_OAUTH_URL=https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+MPESA_STK_ENDPOINT=https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
