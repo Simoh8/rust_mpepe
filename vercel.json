@@ -2,14 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.rs",
-      "use": "@vercel-community/rust"
+      "src": "target/release/mpesa_web",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
+      "src": "/static/(.*)",
+      "dest": "/public/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/api/index.rs"
+      "dest": "/public/index.html"
     }
   ]
 }
